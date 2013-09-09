@@ -1,11 +1,17 @@
 <?php
 
 /**
- * Autoload Class files by namespace
+ * Autoload Class files by PHP namespacing support
  * 
  * @author Jete O'Keeffe
  * @eg 
- 	'namespace' => '/path/to/dir'
+ 	$autoload = [
+ 		'namespace' => '/path/to/dir',
+		'namespace' => '/path/to/dir'
+	];
+	return $autoload;
+ *
+ * @note $dir is the app directory (/path/to/php-cli-app-phalcon/app)
  */
 
 $autoload = [

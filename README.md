@@ -76,11 +76,15 @@ php cli.php Example test1 --debug --record --single
 Adding New Tasks
 --------------------
 
+Go to `php-cli-app-phalcon/app/tasks` directory. This is where all the tasks are stored.
+Just go ahead and create a new file here (eg. NewTask.php)
 
 ```php
 <?php
 
 namespace Tasks;
+
+use \Cli\Output as Output;
 
 class NewTask extends \Phalcon\Cli\Task {
 
