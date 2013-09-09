@@ -46,6 +46,22 @@ try {
 	$app->setAutoload($autoLoad, $appDir);
 	$app->setConfig($config);
 
+	// Check if debug mode
+	if ($key = array_search('--debug', $argv)) {
+		$app->setDebug(TRUE);
+		$app->setEvents(new Events\Cli\Debug());
+	}
+
+	// Check if logging to database
+	if ($key = array_search('--record', $argv)) {
+		$app->setRecord(TRUE);
+	}
+
+	// Check if only run single instance
+	if ($key = array_search('--single', $argv)) {
+		$app->setSingleInstance(TRUE);
+	}
+
 	$app->setArgs($argv, $argc);
 
 	// Boom, Run

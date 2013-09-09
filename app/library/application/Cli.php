@@ -8,7 +8,7 @@
  * @package Cli
  */
 
-namespace application;
+namespace Application;
 
 use \Cli\Output as Output;
 
@@ -28,11 +28,6 @@ class Cli extends \Phalcon\Cli\Console {
 	 * @var string directory path that will contain the pid file
 	 */
 	protected $_pidDir = '/tmp';
-
-	/**
-	 * @var int type of instance (single instance at a time or multiple)
-	 */
-	protected $_mode;
 
 	/**
 	 * @var bool	if debug mode is on or off
@@ -55,24 +50,13 @@ class Cli extends \Phalcon\Cli\Console {
 	protected $_argv;
 
 	/**
-	 * @const
+	 * @var
 	 */
-	const SINGLE_INSTANCE = 1;
+	protected $_singleInstance;
 
-	/**
-	 * @const FLAG_DEBUG
-	 */
-	const FLAG_DEBUG = '--debug';
-
-	/**
-	 * @const FLAG_SINGLE
-	 */
-	const FLAG_SINGLE = '--single';
-
-	/**
-	 * @const FLAG_NO_RECORD
-	 */
-	const FLAG_NO_RECORD = '--no-record';
+	protected $_task;
+	protected $_action;
+	protected $_param;
 
 	/**
 	 * constructor
@@ -80,12 +64,10 @@ class Cli extends \Phalcon\Cli\Console {
 	 * @param single instance or multiple
 	 * @param directory of the pid file
 	 */
-	public function __construct($mode = 0, $pidDir = '/tmp') {
-
-		$this->_mode = $mode;
+	public function __construct($pidDir = '/tmp') {
 		$this->_pidDir = $pidDir;
 		$this->_stderr = $this->_stdout = '';
-		$this->_isRecording = TRUE;
+		$this->_singleInstance = $this->_isRecording = FALSE;
 	}
 
         /**
@@ -103,14 +85,17 @@ class Cli extends \Phalcon\Cli\Console {
 		$di = new \Phalcon\DI\FactoryDefault\CLI();
                 $di->set('config', new \Phalcon\Config(require $file));
 
-                $di->set('db', function() use ($di) {
-                        return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-                                'host' => $di->get('config')->database->host,
-                                'username' => $di->get('config')->database->username,
-                                'password' => $di->get('config')->database->password,
-                                'dbname' => $di->get('config')->database->name
-                        ));
-                });
+		if ($this->_isRecording) {
+			$di->set('db', function() use ($di) {
+				return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+					'host' => $di->get('config')->database->host,
+					'username' => $di->get('config')->database->username,
+					'password' => $di->get('config')->database->password,
+					'dbname' => $di->get('config')->database->name
+				));
+			});
+		}
+
                 $this->setDI($di);
         }
 
@@ -218,39 +203,11 @@ class Cli extends \Phalcon\Cli\Console {
 	 */
 	public function checkProcessInstance(&$argv) {
 
-		// Setup CLI Application flags
-		foreach($argv as $num => $arg) {
-			if ($arg == Cli::FLAG_DEBUG) {
-				// Make sure all errors display
-				error_reporting(E_ALL);
-				ini_set('display_errors', 1);
-
-				$this->_isDebug = TRUE;
-				unset($argv[$num]);
-			} else if ($arg == Cli::FLAG_SINGLE) {
-				unset($argv[$num]);
-				$mode = Cli::SINGLE_INSTANCE;
-			} else if ($arg == Cli::FLAG_NO_RECORD) {
-				$this->_isRecording = FALSE;
-				unset($argv[$num]);
-			}
-		}
-
 		// Single Instance
-		if ($this->_mode == self::SINGLE_INSTANCE) {
+		if ($this->isSingleInstance()) {
 
-			foreach($argv as $arg) {
-				if (empty($launcher)) {
-					$newArgv[] = $launcher = $arg;
-				} else if (empty($task)) {
-					$newArgv[] = $task = $arg;
-				} else if (empty($action)) {
-					$newArgv[] = $action = $arg;
-				}
-			}
-				//		
+			// Default
 			$action = empty($action) ? 'main' : $action;
-			$argv = $newArgv;
 
 			$pidFile = $this->_pidFile = sprintf('%s/%s-%s.pid', $this->_pidDir, $task, $action);
 
@@ -275,10 +232,10 @@ class Cli extends \Phalcon\Cli\Console {
 	/**
 	 * Remove Pid File
 	 *
-	 * return bool
+	 * @return bool
 	 */
 	public function removeProcessInstance() {
-		if ($this->_mode == self::SINGLE_INSTANCE) {
+		if ($this->isSingleInstance()) {
 			$result = unlink($this->_pidFile);
 			if ($result && $this->_isDebug) {
 				Output::stdout("[DEBUG] Removed Pid File: $this->_pidFile");
@@ -334,6 +291,27 @@ class Cli extends \Phalcon\Cli\Console {
 	 */
 	public function setDebug($debug) {
 		$this->_isDebug = $debug;
+		if ($debug) {
+			error_reporting(E_ALL);
+			ini_set('display_errors', 1);
+		}
+	}
+
+	public function setRecord($record) {
+		$this->_isRecording = $record;
+	}
+
+	public function setSingleInstance($single) {
+		$this->_singleInstance = $single;
+	}
+
+	/**
+	 * determine if only a single instance is allowed to run
+	 *
+	 * @return bool
+	 */
+	public function isSingleInstance() {
+		return $this->_singleInstance;
 	}
 
 

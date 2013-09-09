@@ -15,7 +15,8 @@ $autoload = [
 	'Controllers' => $dir . '/controllers/',
 	'Models' => $dir . '/models/',
 	'Tasks' => $dir . '/tasks/',
-	'Cli' => $dir . '/library/cli/'
+	'Cli' => $dir . '/library/cli/',
+	'Events\Cli' => $dir . '/library/events/cli/',
 ];
 
 return $autoload;
