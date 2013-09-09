@@ -48,3 +48,30 @@ cd php-cli-app-phalcon/private
 php cli.php Example test1 
 php cli.php Example main
 ```
+
+Special Flags
+---------------------
+
+Enable debug mode to see a more detailed overview of what is going on
+--debug
+```bash
+php cli.php Example test1 --debug
+```
+
+Record all output to the database (in the task table)
+--record
+```bash
+php cli.php Example test1 --record
+```
+
+Only allow 1 instance to run at a time
+--single
+```bash
+php cli.php Example test1 --single
+```
+
+Enable all flags!
+```bash
+php cli.php Example test1 --debug --record --single
+```
+
