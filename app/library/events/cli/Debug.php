@@ -45,7 +45,7 @@ class Debug extends \Phalcon\Events\Manager {
 			Output::stdout("pid: " . getmypid());
 
 			if ($console->isSingleInstance()) {
-				Output::stdout("pid file: " . $this->_pidFile );
+				Output::stdout("pid file: " . $console->getPidFile() );
 			}
 
 			Output::stdout("task: $taskName");

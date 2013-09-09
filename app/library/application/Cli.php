@@ -68,6 +68,8 @@ class Cli extends \Phalcon\Cli\Console {
 		$this->_pidDir = $pidDir;
 		$this->_stderr = $this->_stdout = '';
 		$this->_singleInstance = $this->_isRecording = FALSE;
+		$this->_task = $this->_action = NULL;
+		$this->_param = array();
 	}
 
         /**
@@ -154,6 +156,7 @@ class Cli extends \Phalcon\Cli\Console {
 			// Check on stupid mistakes
 			$this->preTaskCheck($this->_argc);
 
+			$this->determineTask($this->_argv);
 			// Check Instance Mode (can only one run at a time)
 			$this->checkProcessInstance($this->_argv);
 
@@ -163,10 +166,12 @@ class Cli extends \Phalcon\Cli\Console {
 				$taskId = $task->insertTask();
 			}
 
-			// Setup args for console
-			$args['task'] = 'Tasks' . "\\" . $this->_argv[1];
-			$args['action'] = $this->_argv[2];
-			$args['params'] = '';
+			// Setup args (task, action, params) for console
+			$args['task'] = 'Tasks' . "\\" . $this->_task;
+			$args['action'] = !empty($this->_action) ? $this->_action : 'main';
+			if (!empty($this->_params)) {
+				$args['params'] = $this->_params;
+			}
 
 			// Kick off Task
 			$this->handle($args);
@@ -201,23 +206,20 @@ class Cli extends \Phalcon\Cli\Console {
 	 *
 	 * @param array $argv	cli arguments
 	 */
-	public function checkProcessInstance(&$argv) {
+	public function checkProcessInstance($argv) {
 
 		// Single Instance
 		if ($this->isSingleInstance()) {
 
 			// Default
-			$action = empty($action) ? 'main' : $action;
-
-			$pidFile = $this->_pidFile = sprintf('%s/%s-%s.pid', $this->_pidDir, $task, $action);
+			$this->_pidFile = sprintf('%s/%s-%s.pid', $this->_pidDir, $this->_task, $this->_action);
 
 				//	Make sure only 1 app at a time is running
-			if (file_exists($pidFile)) {
+			if (file_exists($this->_pidFile)) {
 				throw new \Exception('Instance of task is already running', self::ERROR_SINGLE);
 			} else {
-
 					//	Create PID File
-				if (!file_put_contents($pidFile, getmypid())) {
+				if (!file_put_contents($this->_pidFile, getmypid())) {
 					$desc = '';
 					throw new \exceptions\System('unable to create pid file', $desc);
 				}
@@ -249,6 +251,31 @@ class Cli extends \Phalcon\Cli\Console {
 		return TRUE;
 	}
 
+	/**
+	 * Get the task/action to direct to
+	 *
+	 * @param array $flags	cli arguments to determine tasks/action/param
+	 * @throws Exception
+	 */
+	protected function determineTask($flags) {
+
+		// Since first argument is the name so script executing (pop it off the list)
+		array_shift($flags);
+
+		if (is_array($flags) && !empty($flags)) {
+			foreach($flags as $flag) {
+				if (empty($this->_task) && !$this->isFlag($flag)) {
+					$this->_task = $flag;
+				} else if (empty($this->_action) && !$this->isFlag($flag)) {
+					$this->_action = $flag;
+				} else if (!$this->isFlag($flag)) {
+					$this->_params[] = $flag;
+				}
+			}
+		} else {
+			throw new Exception('Unable to determine task/action/params');
+		}
+	}
 
 	/**
 	 * set mode of multiple or single instance at a time
@@ -359,5 +386,23 @@ class Cli extends \Phalcon\Cli\Console {
 		} else {
 			fwrite(STDERR, $msg . PHP_EOL);
 		}
+	}
+
+	/**
+	 * Determine if argument is a special flag
+	 *
+	 * @param string
+	 * @return bool
+	 */
+	protected function isFlag($flag) {
+		return substr(trim($flag), 2) == '--';
+	}
+
+	/**
+	 * Get the PID File location
+	 * @return string
+	 */
+	public function getPidFile() {
+		return $this->_pidFile;
 	}
 }

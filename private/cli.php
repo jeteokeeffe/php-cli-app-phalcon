@@ -37,8 +37,7 @@ $autoLoad = $configPath . 'autoload.php';
 
 try {
 
-	$mode = 0;
-	$app = new Application\Cli($mode);
+	$app = new Application\Cli();
 
 	// Record any php warnings/errors
 	set_error_handler(['Utilities\Debug\PhpError','errorHandler']);
