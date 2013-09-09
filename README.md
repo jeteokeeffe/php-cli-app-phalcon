@@ -18,7 +18,7 @@ php -m | grep -i "phalcon"
 
 Database Configuration
 --------------
-Open  `php-hmac-rest-api/app/config.php` and edit your database connection credentials
+Open  `php-cli-app-phalcon/app/config.php` and edit your database connection credentials
 
 ```php
 $settings = array(
