@@ -48,7 +48,8 @@ cd php-cli-app-phalcon/private
 php cli.php [Task] [Action] [Param1] [Param2]
 ```
 
-Basic example of how to kick off the cli framework
+Tasks are stored in `php-cli-app-phalcon/app/tasks` directory. The following example task is named `ExampleTask.php`.
+Basic example of how to kick off a cli job/task.
 
 ```bash
 cd php-cli-app-phalcon/private
