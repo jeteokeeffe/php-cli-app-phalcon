@@ -87,16 +87,14 @@ class Cli extends \Phalcon\Cli\Console {
 		$di = new \Phalcon\DI\FactoryDefault\CLI();
                 $di->set('config', new \Phalcon\Config(require $file));
 
-		if ($this->_isRecording) {
-			$di->set('db', function() use ($di) {
-				return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
-					'host' => $di->get('config')->database->host,
-					'username' => $di->get('config')->database->username,
-					'password' => $di->get('config')->database->password,
-					'dbname' => $di->get('config')->database->name
-				));
-			});
-		}
+		$di->set('db', function() use ($di) {
+			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+				'host' => $di->get('config')->database->host,
+				'username' => $di->get('config')->database->username,
+				'password' => $di->get('config')->database->password,
+				'dbname' => $di->get('config')->database->name
+			));
+		});
 
                 $this->setDI($di);
         }

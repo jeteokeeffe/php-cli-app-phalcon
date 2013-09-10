@@ -35,17 +35,30 @@ $settings = array(
 
 Import the tables into your mysql database
 ```bash
-mysql -u root -p api < php-cli-app-phalcon/data.sql
+mysql -u root -p api < php-cli-app-phalcon/mysql.data.sql
 ```
 
 Command Line Examples
 ----------------------
+
+General Syntax for running a task/job (Note: only Task is required)
+
+```bash
+cd php-cli-app-phalcon/private 
+php cli.php [Task] [Action] [Param1] [Param2]
+```
 
 Basic example of how to kick off the cli framework
 
 ```bash
 cd php-cli-app-phalcon/private
 php cli.php Example test1 
+```
+
+Passing parameters to your application
+
+```bash
+php cli.php Example test2 bob sanders 
 ```
 
 Special Flags
@@ -103,5 +116,10 @@ Open `php-cli-app-phalcon/app/config/autoload.php` and an element to the existin
 So, you have to use namespacing to load new classes.
 
 ```php
+utoload = [
+        'Utilities\Debug' => $dir . '/library/utilities/debug/',
+	'Trend' => $dir . '/library/trend/'
+];
 
+return $autoload;
 ```

@@ -21,4 +21,10 @@ class ExampleTask extends \Phalcon\Cli\Task {
 	public function mainAction() {
 		Output::stdout("Main Action");
 	}
+
+
+	public function test2Action($paramArray) {
+		Output::stdout("First param: $paramArray[0]");
+		Output::stdout("Second param: $paramArray[1]");
+	}
 }
