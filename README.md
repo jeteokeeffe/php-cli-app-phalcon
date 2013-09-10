@@ -45,7 +45,7 @@ General Syntax for running a task/job (Note: only Task is required)
 
 ```bash
 cd php-cli-app-phalcon/private 
-php cli.php [Task] [Action] [Param1] [Param2]
+php cli.php [Task] [Action] [Param1] [Param2] [...]
 ```
 
 Tasks are stored in `php-cli-app-phalcon/app/tasks` directory. The following example task is named `ExampleTask.php`.
@@ -117,7 +117,7 @@ Open `php-cli-app-phalcon/app/config/autoload.php` and an element to the existin
 So, you have to use namespacing to load new classes.
 
 ```php
-utoload = [
+$autoload = [
         'Utilities\Debug' => $dir . '/library/utilities/debug/',
 	'Trend' => $dir . '/library/trend/'
 ];
