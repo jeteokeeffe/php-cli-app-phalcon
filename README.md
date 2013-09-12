@@ -68,7 +68,7 @@ Special Flags
 Enable debug mode to see a more detailed overview of what is going on `--debug`
 
 ```bash
-php cli.php Example test1 --debug
+php cli.php Example cmd --debug
 ```
 
 Record all output to the database (in the task table) `--record`
