@@ -43,6 +43,10 @@ class Debug extends \Phalcon\Events\Manager {
 			Output::stdout("total time: " . (microtime(TRUE) - $_SERVER['REQUEST_TIME'] ));
 			Output::stdout("hostname: " . php_uname('n'));
 			Output::stdout("pid: " . getmypid());
+			Output::stdout("current memory: " . memory_get_usage(FALSE));
+			Output::stdout("current real memory: " . memory_get_usage(TRUE));
+			Output::stdout("peak memory: " . memory_get_peak_usage(FALSE));
+			Output::stdout("peak real memory: " . memory_get_peak_usage(TRUE));
 
 			if ($console->isSingleInstance()) {
 				Output::stdout("pid file: " . $console->getPidFile() );
