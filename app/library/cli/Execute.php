@@ -10,7 +10,7 @@
  * @package cli
  */
 
-namespace cli;
+namespace Cli;
 
 class Execute {
 
@@ -85,7 +85,7 @@ class Execute {
 			$stdout = implode(PHP_EOL, $stdout);
 		}
 		
-		$command = new Command;
+		$command = new \Cli\Command;
 		$command->command = $cmd;
 		$command->file = $file;
 		$command->line = $line;

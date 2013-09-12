@@ -10,7 +10,7 @@
  * @package cli
  */
 
-namespace cli;
+namespace Cli;
 
 class Command {
 

@@ -38,22 +38,30 @@ class Debug extends \Phalcon\Events\Manager {
 				return;
 			}
 
+			// Get Memory Usage
+			$curMem = memory_get_usage(FALSE);
+			$curRealMem = memory_get_usage(TRUE);
+			$peakMem = memory_get_peak_usage(FALSE);
+			$peakRealMem = memory_get_peak_usage(TRUE);
+
 			Output::stdout("");
 			Output::stdout("--------------DEBUG ENABLED---------------------");
 			Output::stdout("total time: " . (microtime(TRUE) - $_SERVER['REQUEST_TIME'] ));
 			Output::stdout("hostname: " . php_uname('n'));
 			Output::stdout("pid: " . getmypid());
-			Output::stdout("current memory: " . memory_get_usage(FALSE));
-			Output::stdout("current real memory: " . memory_get_usage(TRUE));
-			Output::stdout("peak memory: " . memory_get_peak_usage(FALSE));
-			Output::stdout("peak real memory: " . memory_get_peak_usage(TRUE));
 
 			if ($console->isSingleInstance()) {
 				Output::stdout("pid file: " . $console->getPidFile() );
 			}
 
+			Output::stdout("");
 			Output::stdout("task: $taskName");
 			Output::stdout("action: $actionName");
+			Output::stdout("");
+			Output::stdout("current memory: $curMem bytes " . round($curMem/1024, 2) . " kbytes" );
+			Output::stdout("current real memory: $curRealMem bytes " . round($curRealMem/1024, 2) . " kbytes");
+			Output::stdout("peak memory: $peakMem bytes " . round($peakMem/1024, 2) . " kbytes");
+			Output::stdout("peak real memory: $peakRealMem bytes " . round($peakRealMem/1024, 2) . " kbytes");
 			Output::stdout("");
 
 			// Print out Commands

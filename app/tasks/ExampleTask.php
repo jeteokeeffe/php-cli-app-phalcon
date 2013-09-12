@@ -23,6 +23,14 @@ class ExampleTask extends \Phalcon\Cli\Task {
 	}
 
 
+	public function cmdAction() {
+		$cmd = \Cli\Execute::singleton();
+		$success = $cmd->execute("whoami", __FILE__, __LINE__, $output);
+
+		Output::stdout("You're running this script under $output user");
+	}
+
+
 	public function test2Action($paramArray) {
 		Output::stdout("First param: $paramArray[0]");
 		Output::stdout("Second param: $paramArray[1]");
