@@ -76,6 +76,10 @@ Record all output to the database (in the task table) `--record`
 ```bash
 php cli.php Example test1 --record
 ```
+Then take a look at MySQL
+```sql
+SELECT * FROM task;
+```
 
 Only allow 1 instance to run at a time `--single`
 ```bash
