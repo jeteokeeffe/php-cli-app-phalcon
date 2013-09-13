@@ -229,11 +229,18 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 			// Default
 			$this->_pidFile = sprintf('%s/%s-%s.pid', $this->_pidDir, $this->_task, $this->_action);
 
-				//	Make sure only 1 app at a time is running
+			// Make sure only 1 app at a time is running
 			if (file_exists($this->_pidFile)) {
 				throw new \Exception('Instance of task is already running', self::ERROR_SINGLE);
 			} else {
-					//	Create PID File
+				// Create PID File
+				/*
+				$fp = fopen($this->_pidFile, 'r+');
+				if (!flock($fp, LOCK_EX | LOCK_NB)) {
+					fclose($fp);
+					throw new \exceptions\System('unable to create pid file', $desc);
+				}*/
+
 				if (!file_put_contents($this->_pidFile, getmypid())) {
 					$desc = '';
 					throw new \exceptions\System('unable to create pid file', $desc);
