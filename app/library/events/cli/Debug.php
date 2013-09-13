@@ -25,6 +25,7 @@ class Debug extends \Phalcon\Events\Manager {
 
 
 	/**
+	 * Setup an event to trigger after running task
  	 */
 	public function createEvent() {
 		$this->attach('console:afterHandleTask', function ($event, $console) {
@@ -76,6 +77,20 @@ class Debug extends \Phalcon\Events\Manager {
 					Output::stdout("");
 				}
 				Output::stdout("");
+			}
+
+			// Print out Queries 
+			if ($console->getDI()->has('profiler')) {
+				Output::stdout(Output::COLOR_BLUE . "+++Queries+++" . Output::COLOR_NONE);
+				$profiles = $console->getDI()->getShared('profiler')->getProfiles();
+				if (!empty($profiles)) {
+					foreach ($profiles as $profile) {
+						Output::stdout($profile->getSQLStatement());
+						Output::stdout("time: " . $profile->getTotalElapsedSeconds());
+						Output::stdout("");
+					}
+					Output::stdout("");
+				}
 			}
 
 			// Print out Exceptions

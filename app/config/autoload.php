@@ -23,6 +23,7 @@ $autoload = [
 	'Tasks' => $appDir . '/tasks/',
 	'Cli' => $appDir . '/library/cli/',
 	'Events\Cli' => $appDir . '/library/events/cli/',
+	'Events\Database' => $appDir . '/library/events/database/',
 ];
 
 return $autoload;

@@ -99,12 +99,17 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
                 $di->set('config', new \Phalcon\Config(require $file));
 
 		$di->set('db', function() use ($di) {
-			return new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+
+			$connection =  new \Phalcon\Db\Adapter\Pdo\Mysql(array(
 				'host' => $di->get('config')->database->host,
 				'username' => $di->get('config')->database->username,
 				'password' => $di->get('config')->database->password,
 				'dbname' => $di->get('config')->database->name
 			));
+
+			$connection->setEventsManager(new \Events\Database\Profile());
+
+			return $connection;
 		});
 
                 $this->setDI($di);
@@ -173,7 +178,7 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 			// Add Record to DB that task started
 			if ($this->_isRecording) {
 				$task = new \Models\Task();
-				$taskId = $task->insertTask();
+				$taskId = $task->insertTask($_SERVER['PHP_SELF']);
 			}
 
 			// Setup args (task, action, params) for console
