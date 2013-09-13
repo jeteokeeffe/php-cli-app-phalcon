@@ -18,7 +18,7 @@
  */
 
 
-// Setup configuration files
+// Setup configuration directories
 $dir = dirname(__DIR__);
 $appDir = $dir . '/app';
 
@@ -30,7 +30,7 @@ require $appDir . '/library/application/Cli.php';
 // Capture runtime errors
 register_shutdown_function(['Utilities\Debug\PhpError','runtimeShutdown']);
 
-// Necessary paths to autoload & config settings
+// Necessary paths to autoload & config files
 $configPath = $appDir . '/config/';
 $config = $configPath . 'config.php';
 $autoLoad = $configPath . 'autoload.php';

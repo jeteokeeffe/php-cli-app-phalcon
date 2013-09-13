@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cli based Application
+ * Cli based Application used to setup Tasks to run
  *
  * @author Jete O'Keeffe
  * @version 1.0
@@ -11,8 +11,9 @@
 namespace Application;
 
 use \Cli\Output as Output;
+use \Interfaces\IRun as IRun;
 
-class Cli extends \Phalcon\Cli\Console {
+class Cli extends \Phalcon\Cli\Console implements IRun {
 
 	/**
 	 * @const
@@ -52,11 +53,21 @@ class Cli extends \Phalcon\Cli\Console {
 	/**
 	 * @var
 	 */
-	protected $_singleInstance;
+	protected $_isSingleInstance;
 
+	/**
+	 * Task for cli handler to run
+	 */
 	protected $_task;
+	/**
+	 * Action for cli handler to run
+	 */
 	protected $_action;
-	protected $_param;
+
+	/**
+	 * Parameters to be passed to Task
+	 */
+	protected $_params;
 
 	/**
 	 * constructor
@@ -67,9 +78,9 @@ class Cli extends \Phalcon\Cli\Console {
 	public function __construct($pidDir = '/tmp') {
 		$this->_pidDir = $pidDir;
 		$this->_stderr = $this->_stdout = '';
-		$this->_singleInstance = $this->_isRecording = FALSE;
+		$this->_isSingleInstance = $this->_isRecording = FALSE;
 		$this->_task = $this->_action = NULL;
-		$this->_param = array();
+		$this->_params = array();
 	}
 
         /**
@@ -106,8 +117,9 @@ class Cli extends \Phalcon\Cli\Console {
          * @link http://docs.phalconphp.com/en/latest/reference/loader.html
          * @throws Exception
          * @param string $file          map of namespace to directories
+	 * @param string $appDir	location of the app directory
          */
-        public function setAutoload($file, $dir) {
+        public function setAutoload($file, $appDir) {
                 if (!file_exists($file)) {
                         throw new \Exception('Unable to load autoloader file');
                 }
@@ -322,12 +334,22 @@ class Cli extends \Phalcon\Cli\Console {
 		}
 	}
 
+	/**
+	 * Set Application to record results to database
+	 *
+	 * @param bool
+	 */
 	public function setRecord($record) {
 		$this->_isRecording = $record;
 	}
 
+	/**
+	 * Set Single Instance Flag
+	 *
+	 * @param bool
+	 */
 	public function setSingleInstance($single) {
-		$this->_singleInstance = $single;
+		$this->_isSingleInstance = $single;
 	}
 
 	/**
@@ -336,7 +358,7 @@ class Cli extends \Phalcon\Cli\Console {
 	 * @return bool
 	 */
 	public function isSingleInstance() {
-		return $this->_singleInstance;
+		return $this->_isSingleInstance;
 	}
 
 

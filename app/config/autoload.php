@@ -11,18 +11,18 @@
 	];
 	return $autoload;
  *
- * @note $dir is the app directory (/path/to/php-cli-app-phalcon/app)
+ * @note $appDir is the app directory (/path/to/php-cli-app-phalcon/app)
  */
 
 $autoload = [
-	'Utilities\Debug' => $dir . '/library/utilities/debug/',
-	'Application' => $dir . '/library/application/',
-	'Interfaces' => $dir . '/library/interfaces/',
-	'Controllers' => $dir . '/controllers/',
-	'Models' => $dir . '/models/',
-	'Tasks' => $dir . '/tasks/',
-	'Cli' => $dir . '/library/cli/',
-	'Events\Cli' => $dir . '/library/events/cli/',
+	'Utilities\Debug' => $appDir . '/library/utilities/debug/',
+	'Application' => $appDir . '/library/application/',
+	'Interfaces' => $appDir . '/library/interfaces/',
+	'Controllers' => $appDir . '/controllers/',
+	'Models' => $appDir . '/models/',
+	'Tasks' => $appDir . '/tasks/',
+	'Cli' => $appDir . '/library/cli/',
+	'Events\Cli' => $appDir . '/library/events/cli/',
 ];
 
 return $autoload;
