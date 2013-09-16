@@ -35,4 +35,10 @@ class ExampleTask extends \Phalcon\Cli\Task {
 		Output::stdout("First param: $paramArray[0]");
 		Output::stdout("Second param: $paramArray[1]");
 	}
+
+
+	public function fatalAction() {
+		// trigger a fatal error
+		new throw Exception('triggering a fatal error');
+	}
 }
