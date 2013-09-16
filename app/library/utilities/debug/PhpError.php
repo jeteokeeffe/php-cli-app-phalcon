@@ -22,7 +22,7 @@ class PhpError {
 	 * @param string	php file where the error occured
 	 * @param int		php line where the error occured
 	 */
-	public static function errorHandler($errNo, $errStr, $errFile, $errLine) {
+	public static function errorHandler($errNo, $errStr, $errFile, $errLine, $errContext = NULL) {
 
 		if ($errNo != E_STRICT) {
 
@@ -47,6 +47,8 @@ class PhpError {
 			$rt->ip_address = $ip;
 			$rt->save();
 		}
+
+		return FALSE;
 	}
 
 	/**
