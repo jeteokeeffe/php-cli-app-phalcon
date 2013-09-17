@@ -1,17 +1,21 @@
 php-cli-app-phalcon
 ===================
 
-Command Line Application built using phalcon framework
+Command Line Application with common features built using phalcon framework.
+
+Features
+- Easily Record cli application output to the database
+- Easily force your application to run one instance at a time (handles fatal error properly releasing the pid file)
+- Easily output debug information (even if your application has a fatal error/runtime error)
 
 Requirements
 ---------
 PHP 5.4 or greater
 
-
 Required PHP Modules
-- Phalcon
+- Phalcon (http://phalconphp.com/en/download)
 
-To check for those modules
+To check if phalcon module is installed/enabled for CLI use
 ```bash
 php -m | grep -i "phalcon"
 ```
@@ -35,7 +39,7 @@ $settings = array(
 
 Import the tables into your mysql database
 ```bash
-mysql -u root -p api < php-cli-app-phalcon/mysql.data.sql
+mysql -u root -p your_database_schema < php-cli-app-phalcon/mysql.data.sql
 ```
 
 Command Line Examples
@@ -107,12 +111,17 @@ use \Cli\Output as Output;
 class NewTask extends \Phalcon\Cli\Task {
 
     public function workAction() {
-	Output::stdout("hi");
+        Output::stdout("hi");
     }
 }
 ?>
 ```
 
+Now execute it!
+```bash
+cd php-cli-app-phalcon/private
+php cli.php New test1 
+```
 
 Autoloading new Classes
 --------------------
