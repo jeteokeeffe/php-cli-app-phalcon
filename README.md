@@ -15,7 +15,7 @@ PHP 5.4 or greater
 Required PHP Modules
 - Phalcon (http://phalconphp.com/en/download)
 
-To check if phalcon module is installed/enabled for CLI use
+To check if `phalcon` module is installed/enabled for CLI use
 ```bash
 $ php -m | grep -i "phalcon"
 phalcon
@@ -30,9 +30,9 @@ $settings = array(
         'database' => array(
                 'adapter' => 'Mysql',
                 'host' => 'localhost',
-                'username' => 'test',
-                'password' => 'test',
-                'name' => 'cli',
+                'username' => 'your_user',
+                'password' => 'your_password',
+                'name' => 'your_database_schema',
                 'port' => 3306
         ),
 );
