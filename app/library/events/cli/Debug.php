@@ -60,20 +60,19 @@ class Debug extends \Phalcon\Events\Manager implements IEvent {
 
 		Output::stdout("");
 		Output::stdout(Output::COLOR_BLUE . "--------------DEBUG ENABLED---------------------" . Output::COLOR_NONE);
+		Output::stdout("task: $taskName");
+		Output::stdout("action: $actionName");
 		Output::stdout("total time: " . (microtime(TRUE) - $_SERVER['REQUEST_TIME'] ));
-		Output::stdout("hostname: " . php_uname('n'));
 		if ($console->isRecording()) {
 			Output::stdout("task id: " . $console->getTaskId());
 		}
+		Output::stdout("hostname: " . php_uname('n'));
 		Output::stdout("pid: " . getmypid());
 
 		if ($console->isSingleInstance()) {
 			Output::stdout("pid file: " . $console->getPidFile() );
 		}
 
-		Output::stdout("");
-		Output::stdout("task: $taskName");
-		Output::stdout("action: $actionName");
 		Output::stdout("");
 		Output::stdout("current memory: $curMem bytes " . round($curMem/1024, 2) . " kbytes" );
 		Output::stdout("current real memory: $curRealMem bytes " . round($curRealMem/1024, 2) . " kbytes");
