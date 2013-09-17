@@ -101,12 +101,23 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 
 		$di->set('db', function() use ($di) {
 
-			$connection =  new \Phalcon\Db\Adapter\Pdo\Mysql(array(
+			$type = strtolower($di->get('config')->database->adapter;
+			$creds = array(
 				'host' => $di->get('config')->database->host,
 				'username' => $di->get('config')->database->username,
 				'password' => $di->get('config')->database->password,
 				'dbname' => $di->get('config')->database->name
-			));
+			);
+
+			if ($type == 'mysql') {
+				$connection =  new \Phalcon\Db\Adapter\Pdo\Mysql($creds);
+			} else if ($type == 'postgres') {
+				$connection =  new \Phalcon\Db\Adapter\Pdo\Postgesql($creds);
+			} else if ($type == 'sqlite') {
+				$connection =  new \Phalcon\Db\Adapter\Pdo\Sqlite($creds);
+			} else {
+				throw new Exception('Bad Database Adapter');
+			}
 
 			$connection->setEventsManager(new \Events\Database\Profile());
 

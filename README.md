@@ -14,6 +14,7 @@ PHP 5.4 or greater
 
 Required PHP Modules
 - Phalcon (http://phalconphp.com/en/download)
+- PDO (MySQL or Postgres or Sqlite driver)
 
 To check if `phalcon` module is installed/enabled for CLI use
 ```bash
@@ -102,7 +103,7 @@ Adding New Tasks
 --------------------
 
 Go to `php-cli-app-phalcon/app/tasks` directory. This is where all the tasks are stored.
-Just go ahead and create a new file here (eg. NewTask.php)
+Just go ahead and create a new file here (eg. `NewTask.php`)
 
 ```php
 <?php
@@ -120,14 +121,16 @@ class NewTask extends \Phalcon\Cli\Task {
 ?>
 ```
 
-Now execute it!
+Now run it!
 ```bash
 cd php-cli-app-phalcon/private
-php cli.php New test1 
+php cli.php New work
 ```
 
-Autoloading new Classes
+Adding New Classes to Autoload
 --------------------
+
+Note: All classes must be namespaced if you use the provided autoloader.
 
 Open `php-cli-app-phalcon/app/config/autoload.php` and an element to the existing array.
 So, you have to use namespacing to load new classes.
