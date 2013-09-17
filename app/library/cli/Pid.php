@@ -29,7 +29,7 @@ class Pid {
 	/**
 	 * File pointer
 	 */
-	protected $_file;
+	protected $_fp;
 
 	/**
 	 *
@@ -37,7 +37,8 @@ class Pid {
 	protected function __construct($file) {
 		$this->_pidFile = $file;
 		$this->_isCreated = FALSE;
-		$this->_file = NULL;
+		$this->_isRemoved = FALSE;
+		$this->_fp = NULL;
 	}
 
 	/**
@@ -48,7 +49,7 @@ class Pid {
 	 */
 	public static function singleton($file, $dir = '/tmp') {
 		if (empty(self::$_instance)) {
-			self::$_instance = new Process($dir . '/' . $file);	
+			self::$_instance = new Pid($dir . '/' . $file);	
 		}
 		return self::$_instance;
 	}
@@ -60,7 +61,7 @@ class Pid {
 	public function remove() {
 		if ($this->_isCreated) {
 			// close handle to file and remove it
-			fclose($this->_file);
+			fclose($this->_fp);
 			if ($result = unlink($this->_pidFile)) {
 				return $this->_isRemoved = TRUE;
 			} else {
@@ -82,9 +83,12 @@ class Pid {
 			throw new Exception('Unable to write to this file');
 		}
 
-		$this->_file = fopen($this->_pidFile, 'r+');
-		if (!flock($this->_file, LOCK_EX | LOCK_NB)) {
-			fclose($this->_file);
+		if ($this->_fp = fopen($this->_pidFile, "x")) {
+			if (!flock($this->_fp, LOCK_EX | LOCK_NB)) {
+				fclose($this->_fp);
+				return FALSE;
+			}
+		} else { 
 			return FALSE;
 		}
 
@@ -110,6 +114,15 @@ class Pid {
 	 * Check if Pid file has been deleted
 	 */
 	public function removed() {
-		return $this->_isRemoved();
+		return $this->_isRemoved;
+	}
+
+	/**
+	 * Get the file name (location) of the pid file
+	 *
+	 * @param string
+	 */
+	public function getFileName() {
+		return $this->_pidFile;
 	}
 }

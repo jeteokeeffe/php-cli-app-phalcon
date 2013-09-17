@@ -244,11 +244,14 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 		// Single Instance
 		if ($this->isSingleInstance()) {
 
+			$file = sprintf('%s-%s.pid', $this->_task, $this->_action);
+			$pid = \Cli\Pid::singleton($file);
+
 			// Default
-			$this->_pidFile = sprintf('%s/%s-%s.pid', $this->_pidDir, $this->_task, $this->_action);
+			$this->_pidFile = $file;
 
 			// Make sure only 1 app at a time is running
-			if (file_exists($this->_pidFile)) {
+			if ($pid->exists()) {
 				throw new \Exception('Instance of task is already running', self::ERROR_SINGLE);
 			} else {
 				// Create PID File
@@ -259,14 +262,20 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 					throw new \exceptions\System('unable to create pid file', $desc);
 				}*/
 
-				if (!file_put_contents($this->_pidFile, getmypid())) {
+				if ($pid->create()) {
+					if ($this->isDebug()) {
+						Output::stdout("[DEBUG] Created Pid File: " . $pid->getFileName());
+					}
+				} else {
 					$desc = '';
 					throw new \exceptions\System('unable to create pid file', $desc);
 				}
 
-				if ($this->_isDebug) {
-					Output::stdout("[DEBUG] Created Pid File: $this->_pidFile");
-				}
+				/*if (!file_put_contents($this->_pidFile, getmypid())) {
+					$desc = '';
+					throw new \exceptions\System('unable to create pid file', $desc);
+				}*/
+
 			}
 		}
 	}
@@ -278,14 +287,18 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 	 */
 	public function removeProcessInstance() {
 		if ($this->isSingleInstance()) {
-			$result = unlink($this->_pidFile);
-			if ($result && $this->_isDebug) {
-				Output::stdout("[DEBUG] Removed Pid File: $this->_pidFile");
-			} else if ($result === FALSE) {
-				Output::stderr("[ERROR] Failed to remove Pid File: $this->_pidFile");
+			$pid = \Cli\Pid::singleton('');
+			if ($pid->created() && !$pid->removed()) {
+				if ($result = $pid->remove()) {
+					if ($this->isDebug()) {
+						Output::stdout("[DEBUG] Removed Pid File: " . $pid->getFileName());
+					}
+				} else {
+					$msg = Output::COLOR_RED . "[ERROR]" . Output::COLOR_NONE . " Failed to remove Pid File: $this->_pidFile";
+					Output::stderr($msg);
+				}
+				return $result;
 			}
-
-			return $result;
 		}
 
 		return TRUE;
@@ -364,6 +377,10 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 		}
 	}
 
+	public function isDebug() {
+		return $this->_isDebug;
+	}
+
 	/**
 	 * Set Application to record results to database
 	 *
@@ -410,7 +427,7 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 	 */
 	protected function handleException(\Exception $e, $taskId, $exit) {
 
-		$sub = '%s[ERROR] \e[0m%s file: %s line: %d';
+		$sub = '%s[ERROR]%s %s file: %s line: %d';
 
 		// Remove Process Instance
 		if ($e->getCode() != self::ERROR_SINGLE) {
@@ -419,32 +436,17 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 
 		// Update Failure
 		if ($this->_isRecording && $taskId > 0) {
-			
-			if ($error = class_exists('\\Cli\Output')) {
-				$msg = sprintf($sub, Output::COLOR_RED, $e->getMessage(), $e->getFile(), $e->getLine());
-
-				$stdout = Output::getStdout();
-				$stderr = Output::getStderr();
-			} else { 
-				$msg = sprintf($sub, '\e[0;31m', $e->getMessage(), $e->getFile(), $e->getLine());
-
-				$stdout = '';
-				$stderr = $msg;
-			}
-
+			$stdout = Output::getStdout();
+			$stderr = Output::getStderr();
 				//	Update Task w/ error messages
 			$task = new \Models\Task();
 			$task->updateFailed($taskId, $stdout, $stderr, $exit);
-		} else {
-			$msg = $e->getMessage();
-		}
+		} 
 
-			//	Let user that ran this know it failed
-		if (class_exists('\\Cli\Output')) {
-			Output::stderr($msg);
-		} else {
-			fwrite(STDERR, $msg . PHP_EOL);
-		}
+		$msg = sprintf($sub, Output::COLOR_RED, Output::COLOR_NONE, $e->getMessage(), $e->getFile(), $e->getLine());
+
+		// Let user that ran this know it failed
+		Output::stderr($msg);
 	}
 
 	/**

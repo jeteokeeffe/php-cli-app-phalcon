@@ -71,7 +71,7 @@ class Debug extends \Phalcon\Events\Manager implements IEvent {
 		Output::stdout("pid: " . getmypid());
 
 		if ($console->isSingleInstance()) {
-			Output::stdout("pid file: " . $console->getPidFile() );
+			Output::stdout("pid file: " . \Cli\Pid::singleton('')->getFileName() );
 		}
 
 		Output::stdout("");
