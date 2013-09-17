@@ -62,6 +62,9 @@ class Debug extends \Phalcon\Events\Manager implements IEvent {
 		Output::stdout(Output::COLOR_BLUE . "--------------DEBUG ENABLED---------------------" . Output::COLOR_NONE);
 		Output::stdout("total time: " . (microtime(TRUE) - $_SERVER['REQUEST_TIME'] ));
 		Output::stdout("hostname: " . php_uname('n'));
+		if ($console->isRecording()) {
+			Output::stdout("task id: " . $console->getTaskId());
+		}
 		Output::stdout("pid: " . getmypid());
 
 		if ($console->isSingleInstance()) {

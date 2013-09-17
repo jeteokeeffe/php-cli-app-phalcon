@@ -5,8 +5,8 @@ Command Line Application with common features built using phalcon framework.
 
 Features
 - Easily Record cli application output to the database
-- Easily force your application to run one instance at a time (handles fatal error properly releasing the pid file)
-- Easily output debug information (even if your application has a fatal error/runtime error)
+- Easily force your application to run one instance at a time (handles fatal errors properly releasing the pid file)
+- Easily output debug information (even if your application has a fatal/runtime error)
 
 Requirements
 ---------

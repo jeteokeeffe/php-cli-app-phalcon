@@ -52,7 +52,7 @@ try {
 
 	// Check if logging to database
 	if ($key = array_search('--record', $argv)) {
-		$app->setRecord(TRUE);
+		$app->setRecording(TRUE);
 	}
 
 	// Check if debug mode

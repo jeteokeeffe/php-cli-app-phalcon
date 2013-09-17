@@ -363,8 +363,17 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 	 *
 	 * @param bool
 	 */
-	public function setRecord($record) {
+	public function setRecording($record) {
 		$this->_isRecording = $record;
+	}
+
+	/**
+	 * Determine if application is recording output (stdout and stderr) to database
+	 *
+	 * @return bool
+	 */
+	public function getRecording() {
+		return $this->_isRecording;
 	}
 
 	/**
