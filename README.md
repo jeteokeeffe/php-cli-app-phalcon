@@ -29,8 +29,8 @@ Open  `php-cli-app-phalcon/app/config.php` and edit your database connection cre
 ```php
 $settings = array(
         'database' => array(
-                'adapter' => 'Mysql',
-                'host' => 'localhost',
+                'adapter' => 'Mysql',   /* Possible Values: Mysql, Postgres, Sqlite */
+                'host' => 'your_ip_or_hostname',
                 'username' => 'your_user',
                 'password' => 'your_password',
                 'name' => 'your_database_schema',
@@ -78,14 +78,10 @@ This also enables a more verbose level of php reporting, displaying all php warn
 php cli.php Example cmd --debug
 ```
 
-Record all output to the database (in the task table) `--record`
+Record all output to the database (in the `task` table) `--record` . 
 
 ```bash
 php cli.php Example test1 --record
-```
-Then take a look at MySQL
-```sql
-SELECT * FROM task;
 ```
 
 
