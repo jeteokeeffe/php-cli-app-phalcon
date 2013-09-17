@@ -101,7 +101,7 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 
 		$di->set('db', function() use ($di) {
 
-			$type = strtolower($di->get('config')->database->adapter;
+			$type = strtolower($di->get('config')->database->adapter);
 			$creds = array(
 				'host' => $di->get('config')->database->host,
 				'username' => $di->get('config')->database->username,
@@ -372,7 +372,7 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 	 *
 	 * @return bool
 	 */
-	public function getRecording() {
+	public function isRecording() {
 		return $this->_isRecording;
 	}
 
