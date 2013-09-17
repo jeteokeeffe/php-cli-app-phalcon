@@ -4,6 +4,7 @@
  * Capture PHP related warnings/errors
  *
  * @package Utilties
+ * @subpackage Debug
  * @author Jete O'Keeffe
  * @version 1.0
  * @link
@@ -48,7 +49,7 @@ class PhpError {
 			$rt->save();
 		}
 
-		return NULL;
+		return FALSE;
 	}
 
 	/**

@@ -66,13 +66,19 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 
 	/**
 	 * Parameters to be passed to Task
+	 * @var
 	 */
 	protected $_params;
 
 	/**
+	 * Task Id from the database
+	 * @var
+	 */
+	protected $_taskId;
+
+	/**
 	 * constructor
 	 *
-	 * @param single instance or multiple
 	 * @param directory of the pid file
 	 */
 	public function __construct($pidDir = '/tmp') {
