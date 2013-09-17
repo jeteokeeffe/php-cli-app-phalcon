@@ -17,7 +17,8 @@ Required PHP Modules
 
 To check if phalcon module is installed/enabled for CLI use
 ```bash
-php -m | grep -i "phalcon"
+$ php -m | grep -i "phalcon"
+phalcon
 ```
 
 Database Configuration
@@ -70,6 +71,7 @@ Special Flags
 ---------------------
 
 Enable debug mode to see a more detailed overview of what is going on `--debug`
+This also enables a more verbose level of php reporting, displaying all php warnings.
 
 ```bash
 php cli.php Example cmd --debug
@@ -84,6 +86,7 @@ Then take a look at MySQL
 ```sql
 SELECT * FROM task;
 ```
+
 
 Only allow 1 instance to run at a time `--single`
 ```bash
