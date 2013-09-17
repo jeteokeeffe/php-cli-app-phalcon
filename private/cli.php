@@ -13,8 +13,6 @@
  * @example php cli.php [task] [action] [param1 [param2 ...]]
  * @example php cli.php Example index
  * @example php cli.php Example index --debug --single --no-record
- *
- * @notes Make sure to Autoload tasks directory
  */
 
 
@@ -45,10 +43,11 @@ try {
 	$app->setAutoload($autoLoad, $appDir);
 	$app->setConfig($config);
 
-	// Check if debug mode
-	if ($key = array_search('--debug', $argv)) {
-		$app->setDebug(TRUE);
-		$app->setEvents(new Events\Cli\Debug());
+	// Check if only run single instance
+	if ($key = array_search('--single', $argv)) {
+		$app->setSingleInstance(TRUE);
+		// Ensure pid removes even on fatal error
+		register_shutdown_function([$app, 'removeProcessInstance']);
 	}
 
 	// Check if logging to database
@@ -56,9 +55,11 @@ try {
 		$app->setRecord(TRUE);
 	}
 
-	// Check if only run single instance
-	if ($key = array_search('--single', $argv)) {
-		$app->setSingleInstance(TRUE);
+	// Check if debug mode
+	if ($key = array_search('--debug', $argv)) {
+		$app->setDebug(TRUE);
+		// Ensure debug display even on fatal error	
+		register_shutdown_function([new Events\Cli\Debug(FALSE), 'display'], $app);
 	}
 
 	$app->setArgs($argv, $argc);

@@ -9,13 +9,9 @@
  * @link
  * @license
  */
-
 namespace Interfaces;
 
-interface IRun {
+interface IEvent {
 
-	/**
-	 * Main method to run the object
-	 */
-	public function run();
+	public function handleEvent();
 }

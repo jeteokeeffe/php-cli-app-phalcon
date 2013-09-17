@@ -4,7 +4,7 @@
  * Capture PHP related warnings/errors
  *
  * @package Utilties
- * @author Jete O'Keeffe <jete.okeeffe@gmail.com>
+ * @author Jete O'Keeffe
  * @version 1.0
  * @link
  */
@@ -48,7 +48,7 @@ class PhpError {
 			$rt->save();
 		}
 
-		return FALSE;
+		return NULL;
 	}
 
 	/**

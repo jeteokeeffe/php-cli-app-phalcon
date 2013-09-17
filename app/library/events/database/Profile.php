@@ -9,19 +9,22 @@
 
 namespace Events\Database;
 
-class Profile extends \Phalcon\Events\Manager {
+use \Interfaces\IEvent as IEvent;
+
+class Profile extends \Phalcon\Events\Manager implements IEvent {
 
 	/**
 	 * Constructor
  	 */
 	public function __construct() {
-		$this->createEvent();
+		$this->handleEvent();
 	}
 
 	/**
 	 * Create the Event
 	 */
-	public function createEvent() {
+	public function handleEvent() {
+
 		$di = \Phalcon\DI::getDefault();
 		$di->set('profiler', function() {
 			return new \Phalcon\Db\Profiler();

@@ -37,8 +37,11 @@ class ExampleTask extends \Phalcon\Cli\Task {
 	}
 
 
+	/**
+	 * Action to trigger a fatal error
+	 */
 	public function fatalAction() {
-		// trigger a fatal error
-		new throw Exception('triggering a fatal error');
+		// trigger a fatal error w/ Class that doesn't exist
+		new TriggerARuntimeFatal();
 	}
 }

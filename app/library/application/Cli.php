@@ -81,6 +81,7 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 		$this->_isSingleInstance = $this->_isRecording = FALSE;
 		$this->_task = $this->_action = NULL;
 		$this->_params = array();
+		$this->_taskId = NULL;
 	}
 
         /**
@@ -178,7 +179,7 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 			// Add Record to DB that task started
 			if ($this->_isRecording) {
 				$task = new \Models\Task();
-				$taskId = $task->insertTask($_SERVER['PHP_SELF']);
+				$this->_taskId = $task->insertTask($_SERVER['PHP_SELF']);
 			}
 
 			// Setup args (task, action, params) for console
@@ -195,21 +196,21 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 
 			// Update status
 			if ($this->_isRecording) {
-				$task->updateSuccessful($taskId, Output::getStdout(), Output::getStderr(), $exit);
+				$task->updateSuccessful($this->_taskId, Output::getStdout(), Output::getStderr(), $exit);
 			}
 
 
 		} catch(\cli\Exception $e) {
 			$exit = 3;
-			$this->handleException($e, $taskId, $exit);
+			$this->handleException($e, $this->_taskId, $exit);
 
 		} catch(\Phalcon\Exception $e) {
 			$exit = 2;
-			$this->handleException($e, $taskId, $exit);
+			$this->handleException($e, $this->_taskId, $exit);
 
 		} catch(\Exception $e) {
 			$exit = 1;
-			$this->handleException($e, $taskId, $exit);
+			$this->handleException($e, $this->_taskId, $exit);
 		}
 
 		return $exit;
@@ -436,5 +437,13 @@ class Cli extends \Phalcon\Cli\Console implements IRun {
 	 */
 	public function getPidFile() {
 		return $this->_pidFile;
+	}
+
+	/**
+	 * Get the auto incremented value for current task
+	 * @return int|NULL
+	 */
+	public function getTaskId() {
+		return $this->_taskId;
 	}
 }
