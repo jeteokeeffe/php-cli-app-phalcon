@@ -57,13 +57,16 @@ class Debug extends \Phalcon\Events\Manager implements IEvent {
 		$curRealMem = memory_get_usage(TRUE);
 		$peakMem = memory_get_peak_usage(FALSE);
 		$peakRealMem = memory_get_peak_usage(TRUE);
+		// Get Time
+		$totalTime = microtime(TRUE) - $_SERVER['REQUEST_TIME'];
+		$startTime = date('m/d/y h:i:s', $_SERVER['REQUEST_TIME']);
 
 		Output::stdout("");
 		Output::stdout(Output::COLOR_BLUE . "--------------DEBUG ENABLED---------------------" . Output::COLOR_NONE);
 		Output::stdout(Output::COLOR_BLUE . "+++Overview+++" . Output::COLOR_NONE);
 		Output::stdout("task: $taskName");
 		Output::stdout("action: $actionName");
-		Output::stdout("total time: " . (microtime(TRUE) - $_SERVER['REQUEST_TIME'] ));
+		Output::stdout("total time: $totalTime start time: $startTime end time: " . date('m/d/y h:i:s'));
 		if ($console->isRecording()) {
 			Output::stdout("task id: " . $console->getTaskId());
 		}
