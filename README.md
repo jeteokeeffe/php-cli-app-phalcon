@@ -39,9 +39,13 @@ $settings = array(
 );
 ```
 
-Import the tables into your mysql database
+Import the tables into your MySQL Server
 ```bash
 mysql -u root -p your_database_schema < php-cli-app-phalcon/mysql.data.sql
+```
+Import the tables into your Postgres Server
+```bash
+psql -U root -W -f postgres.data.sql your_database_schema
 ```
 
 Command Line Examples
