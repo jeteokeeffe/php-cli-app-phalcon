@@ -8,7 +8,7 @@
  * @package cli
  */
 
-namespace cli;
+namespace Cli;
 
 class Output {
 
@@ -94,4 +94,14 @@ class Output {
 	public static function getStderr() {
 		return self::$_stderr;
 	}
+
+    /**
+     * Clear Output
+     */
+    public static function clear() {
+        unset(self::$_stderr);        
+        self::$_stderr = '';        
+        unset(self::$_stdout);        
+        self::$_stdout = '';        
+    }
 }
