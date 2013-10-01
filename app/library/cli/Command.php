@@ -35,15 +35,19 @@ class Command {
 	public $success;
 
 	/**
-	 * @var string output from command
+	 * @var string  standard output from command
 	 */
-	public $output;
+	public $stdout;
+
+	/**
+	 * @var string  error output from command
+	 */
+	public $stderr;
 
 	/**
 	 * @var string time taken for command to execute
 	 */
 	public $time;
-
 
 	/**
 	 * @var int	command status/return result
