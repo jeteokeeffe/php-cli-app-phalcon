@@ -47,7 +47,7 @@ class Debug extends \Phalcon\Events\Manager implements IEvent {
 		$taskName = $dispatcher->getTaskName();
 		$actionName = $dispatcher->getActionName();
 
-		if (!class_exists('\\cli\Output')) {
+		if (!class_exists('\\Cli\Output')) {
 			fwrite(STDERR, "Unable to find Output class" . PHP_EOL);
 			return;
 		}
