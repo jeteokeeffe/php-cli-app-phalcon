@@ -16,7 +16,7 @@ class Execute {
 
 	/**
 	 * single instance of class (needed for singleton)
-	 * @var mixed 
+	 * @var object 
 	 */
 	protected static $_instance; 
 
@@ -27,17 +27,10 @@ class Execute {
 	protected $_command;
 
 	/**
-	 * turns standard error mode on or off
-	 * @var bool 
-	 */
-	protected $_stderrMode;
-
-	/**
 	 * constructor to initialize class
 	 */
 	private function __construct() {
 		$this->_command = array();
-		$this->_stderrMode = TRUE;
 	}
 
 	/**
@@ -50,15 +43,6 @@ class Execute {
 			self::$_instance = new self();
 		}
 		return self::$_instance;
-	}
-	
-	/**
-	 * will add an extra flag redirect error output to standard output
-	 *
-	 * @param bool $add	TRUE or FALSE
-	 */
-	public function addStderr($add = FALSE) {
-		$this->_stderrMode = $add;
 	}
 
 	/**
