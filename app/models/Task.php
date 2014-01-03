@@ -13,11 +13,18 @@ class Task extends \Phalcon\Mvc\Model {
 	 * @return FALSE|int
 	 */
 	public function insertTask($scriptName) {
+        if (isset($_SERVER['USER'])) {
+            $user = $_SERVER['USER'];
+        } else if (isset($_SERVER['USERNAME'])) {
+            $user = $_SERVER['USERNAME'];
+        } else {
+            $user = '*Unknown*';
+        }
 
 		$this->script_name = $_SERVER['_'] . ' ' . $scriptName;
 		$this->params = implode(' ', $_SERVER['argv']);
 		$this->server_name = php_uname('n');
-		$this->server_user = $_SERVER['USER'];
+		$this->server_user = $user;
 		$this->start_time = date('Y-m-d H:i:s');
 		$this->pid = getmypid();
 
