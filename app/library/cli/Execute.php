@@ -16,13 +16,13 @@ class Execute {
 
 	/**
 	 * single instance of class (needed for singleton)
-	 * @var object 
+	 * @var object
 	 */
-	protected static $_instance; 
+	protected static $_instance;
 
 	/**
 	 * array of commands
-	 * @var array 
+	 * @var array
 	 */
 	protected $_command;
 
@@ -35,7 +35,7 @@ class Execute {
 
 	/**
 	 * Get single instance of class
-	 * 
+	 *
 	 * @return instance of this class
 	 */
 	public static function singleton() {
@@ -48,15 +48,16 @@ class Execute {
 	/**
 	 * execute a command
 	 *
-	 * @param string $cmd 
+	 * @param string $cmd
 	 * @param string $file
 	 * @param int $line
 	 * @param string $stdout string
-	 * @param string $return exit code of command
+	 * @param string $stderr Stderr result
+     * @param resource|string $stdin Readable resource stream or string to be passed to proc STDIN
 	 *
-	 * @return TRUE|int 
+	 * @return TRUE|int return exit code of command
 	 */
-	public function execute($cmd, $file, $line, &$stdout = NULL, &$stderr = NULL) {
+	public function execute($cmd, $file, $line, &$stdout = NULL, &$stderr = NULL, $stdin=NULL) {
         // Create temporary files to write output/stderr (dont worry about stdin)
         $outFile = tempnam(".", "cli");
         $errFile = tempnam(".", "cli");
@@ -74,6 +75,12 @@ class Execute {
         if (!is_resource($proc)) {
             $result =  255;
         } else {
+            if($stdin){
+                if(is_resource($stdin))
+                    stream_copy_to_stream($stdin, $pipes[0]);
+                else
+                    fwrite($pipes[0], $stdin);
+            }
             fclose($pipes[0]);
             $return = proc_close($proc);
         }
@@ -86,7 +93,7 @@ class Execute {
         // Remove temp files
         unlink($outFile);
         unlink($errFile);
-        
+
 		$command = new \Cli\Command;
 		$command->command = $cmd;
 		$command->file = $file;
@@ -105,7 +112,7 @@ class Execute {
 
 	/**
 	 * Get all commands executed
-	 * 
+	 *
 	 * @return array of executed commands
 	 */
 	public function getCommands() {
