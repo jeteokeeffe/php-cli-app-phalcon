@@ -1,6 +1,8 @@
 php-cli-app-phalcon
 ===================
 
+Donations appreciated Bitcoin: 1EBCsnpYftigYFSpZtXWFjRTAgPb3EdZZh
+
 Command Line Application with common features built using phalcon framework.
 
 Features
