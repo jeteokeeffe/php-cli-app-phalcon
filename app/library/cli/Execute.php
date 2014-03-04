@@ -87,8 +87,8 @@ class Execute {
 		$end = microtime(TRUE);
 
         // Get Output
-        $stdout = implode(PHP_EOL, file($outFile));
-        $stderr = implode(PHP_EOL, file($errFile));
+        $stdout = implode("", file($outFile));
+        $stderr = implode("", file($errFile));
 
         // Remove temp files
         unlink($outFile);
