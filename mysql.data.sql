@@ -11,7 +11,7 @@ CREATE TABLE `runtimeError` (
   `ip_address` varchar(16) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`error_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `queryError` (
@@ -27,7 +27,7 @@ CREATE TABLE `queryError` (
   `ip_address` varchar(16) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`error_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `task` (
   `task_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -43,4 +43,4 @@ CREATE TABLE `task` (
   `stderr` text,
   `pid` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`task_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,21 +1,22 @@
 <?php
 
 /**
- * Interface for Running 
+ * Interface for Running
  *
  * @category Interfaces
- * @package Interfaces
- * @author  Jete O'Keeffe
+ * @package  Interfaces
+ * @author   Jete O'Keeffe
  * @link
  * @license
  */
 
 namespace Interfaces;
 
-interface IRun {
+interface IRun
+{
 
-	/**
-	 * Main method to run the object
-	 */
-	public function run();
+    /**
+     * Main method to run the object
+     */
+    public function run();
 }
