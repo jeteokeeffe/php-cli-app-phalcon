@@ -29,16 +29,16 @@ Database Configuration
 Open  `php-cli-app-phalcon/app/config.php` and edit your database connection credentials
 
 ```php
-$settings = array(
-        'database' => array(
+$settings = [
+        'database' => [
                 'adapter' => 'Mysql',   /* Possible Values: Mysql, Postgres, Sqlite */
                 'host' => 'your_ip_or_hostname',
                 'username' => 'your_user',
                 'password' => 'your_password',
                 'name' => 'your_database_schema',
                 'port' => 3306
-        ),
-);
+        ],
+];
 ```
 
 Import the tables into your MySQL Server

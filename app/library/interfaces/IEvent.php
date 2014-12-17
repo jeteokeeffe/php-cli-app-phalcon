@@ -1,17 +1,18 @@
 <?php
 
 /**
- * Interface for Running 
+ * Interface for Running
  *
  * @category Interfaces
- * @package Interfaces
- * @author  Jete O'Keeffe
+ * @package  Interfaces
+ * @author   Jete O'Keeffe
  * @link
  * @license
  */
 namespace Interfaces;
 
-interface IEvent {
+interface IEvent
+{
 
-	public function handleEvent();
+    public function handleEvent();
 }
