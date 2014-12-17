@@ -96,6 +96,8 @@ Only allow 1 instance to run at a time `--single`
 php cli.php Example test1 --single
 ```
 
+> Single param has problem in windows machine
+
 Enable all flags
 ```bash
 php cli.php Example test1 --debug --record --single
