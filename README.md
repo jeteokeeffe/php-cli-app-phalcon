@@ -3,7 +3,7 @@ php-cli-app-phalcon
 
 Donations appreciated Bitcoin: 1EBCsnpYftigYFSpZtXWFjRTAgPb3EdZZh
 
-Command Line Application with common features built using phalcon framework.
+Command Line Application with common features built using Phalcon Framework.
 
 Features
 - Easily Record cli application output to the database
@@ -29,16 +29,16 @@ Database Configuration
 Open  `php-cli-app-phalcon/app/config.php` and edit your database connection credentials
 
 ```php
-$settings = array(
-        'database' => array(
+$settings = [
+        'database' => [
                 'adapter' => 'Mysql',   /* Possible Values: Mysql, Postgres, Sqlite */
                 'host' => 'your_ip_or_hostname',
                 'username' => 'your_user',
                 'password' => 'your_password',
                 'name' => 'your_database_schema',
                 'port' => 3306
-        ),
-);
+        ],
+];
 ```
 
 Import the tables into your MySQL Server
@@ -140,7 +140,7 @@ So, you have to use namespacing to load new classes.
 ```php
 $autoload = [
         'Utilities\Debug' => $dir . '/library/utilities/debug/',
-	'Trend' => $dir . '/library/trend/'
+        'Trend' => $dir . '/library/trend/'
 ];
 
 return $autoload;
